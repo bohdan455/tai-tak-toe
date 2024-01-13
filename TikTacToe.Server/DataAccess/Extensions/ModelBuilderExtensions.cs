@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Enum;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Extensions;
@@ -15,12 +16,12 @@ public static class ModelBuilderExtensions
     {
         var red = new PlayerType
         {
-            Id = 1,
+            Id = PlayerColors.Red,
             Name = "Red",
         };
         var blue = new PlayerType
         {
-            Id = 2,
+            Id = PlayerColors.Blue,
             Name = "Blue",
         };
         
@@ -31,12 +32,12 @@ public static class ModelBuilderExtensions
     {
         var red = new WinnerType
         {
-            Id = 1,
+            Id = PlayerColors.Red,
             Name = "Red",
         };
         var blue = new WinnerType
         {
-            Id = 2,
+            Id = PlayerColors.Blue,
             Name = "Blue",
         };
         var draw = new WinnerType

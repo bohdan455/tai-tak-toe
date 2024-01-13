@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Extensions;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
@@ -20,5 +21,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.PopulateEntities();
     }
 }
