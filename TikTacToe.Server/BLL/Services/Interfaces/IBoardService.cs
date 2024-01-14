@@ -4,7 +4,7 @@ namespace BLL.Services.Interfaces;
 
 public interface IBoardService
 {
-    Task MakeMove(int x, int y, string playerId, string boardId);
+    Task MakeMove(int columnIndex, int rowIndex, string playerId);
 
     Task<BoardDto> GetBoard(string boardId);
 

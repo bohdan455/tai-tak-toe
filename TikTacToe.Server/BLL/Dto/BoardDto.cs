@@ -7,10 +7,14 @@ public class BoardDto
     public BoardDto(Room room)
     {
         Winner = room.Winner?.Name;
-        Board = room.Board;
+        Cells = room.Values.Select(x => new BoardCellDto
+        {
+            ColumnIndex = x.ColumnIndex,
+            RowIndex = x.RowIndex
+        });
     }
     
     public string? Winner { get; set; }
 
-    public IEnumerable<IEnumerable<int>> Board { get; set; }
+    public IEnumerable<BoardCellDto> Cells { get; set; }
 }

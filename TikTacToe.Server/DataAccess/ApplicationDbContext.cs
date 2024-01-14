@@ -14,13 +14,16 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Room> Rooms { get; set; }
     
+    public virtual DbSet<BoardCellValue> BoardCellValues { get; set; }
+    
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.PopulateEntities();
+        modelBuilder.ConfigureEntities();
+        base.OnModelCreating(modelBuilder);
     }
 }

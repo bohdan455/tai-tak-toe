@@ -1,9 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Models;
 
 public class Player
 {
+    public Player()
+    {
+    }
+    
     public Player(string playerId)
     {
         Id = playerId;
@@ -16,13 +21,13 @@ public class Player
         PlayerTypeId = playerTypeId;
     }
     
-    [Key] 
-    [MaxLength(255)]
     public string Id { get; set; }
     
-    [Required] 
     public PlayerType? PlayerType { get; set; }
     
-    [Required]
     public int PlayerTypeId { get; set; }
+    
+    public Room? Room { get; set; }
+    
+    public Guid RoomId { get; set; }
 }

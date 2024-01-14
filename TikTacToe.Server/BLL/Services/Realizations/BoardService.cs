@@ -15,21 +15,21 @@ public class BoardService : IBoardService
         _context = context;
     }
     
-    public async Task MakeMove(int x, int y, string playerId, string boardId)
+    public async Task MakeMove(int columnIndex, int rowIndex, string playerId)
     {
-        var room = await _context
-            .Rooms
-            .Include(r => r.Board)
-            .FirstAsync(r => r.Id.ToString() == boardId);
-        
-        var color = _context
+        var player = await _context
             .Players
-            .First(p => p.Id == playerId)
-            .PlayerTypeId;
+            .Include(p => p.Room)
+            .ThenInclude(b => b!.Values)
+            .FirstAsync(p => p.Id == playerId);
         
-        room.Board[x][y] = color;
+        var cell = player
+            .Room!
+            .Values
+            .FirstOrDefault(c => c.ColumnIndex == columnIndex && c.RowIndex == rowIndex);
         
-        _context.Rooms.Update(room);
+        cell!.Value = player.PlayerTypeId;
+        _context.BoardCellValues.Update(cell);
         await _context.SaveChangesAsync();
     }
 
@@ -37,7 +37,7 @@ public class BoardService : IBoardService
     {
         var board = await _context
             .Rooms
-            .Include(r => r.Board)
+            .Include(r => r.Values)
             .FirstAsync(r => r.Id.ToString() == boardId);
         return new(board);
     }

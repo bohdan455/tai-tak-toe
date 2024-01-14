@@ -1,5 +1,6 @@
 ﻿using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Rest.Models;
 
 namespace Rest.Controllers;
 
@@ -16,8 +17,9 @@ public class GameController : ControllerBase
 
     [HttpPost]
     [Route("start")]
-    public async Task<IActionResult> StartGame(string playerId)
+    public async Task<IActionResult> StartGame()
     {
+        var playerId = Guid.NewGuid().ToString();
         var boardId = await _boardService.StartGame(playerId);
         return Ok(new {playerId, boardId});
     }
@@ -26,20 +28,21 @@ public class GameController : ControllerBase
     [Route("join")]
     public async Task<IActionResult> JoinGame([FromBody] JoinGameRequest request)
     {
-        await _boardService.AddSecondPlayerToGame(request.PlayerId, request.BoardId);
-        return Ok();
+        var playerId = Guid.NewGuid().ToString();
+        await _boardService.AddSecondPlayerToGame(playerId, request.BoardId);
+        return Ok(playerId);
     }
 
     [HttpPost]
     [Route("move")]
     public async Task<IActionResult> MakeMove([FromBody] MakeMoveRequest request)
     {
-        await _boardService.MakeMove(request.X, request.Y, request.PlayerId, request.BoardId);
+        await _boardService.MakeMove(request.X, request.Y, request.PlayerId);
         return Ok();
     }
 
     [HttpGet]
-    [Route("board")]
+    [Route("board/{boardId}")]
     public async Task<IActionResult> GetBoard([FromQuery] string boardId)
     {
         var board = await _boardService.GetBoard(boardId);
