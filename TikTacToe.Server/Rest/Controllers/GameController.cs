@@ -42,7 +42,7 @@ public class GameController : ControllerBase
     }
 
     [HttpGet]
-    [Route("board/{boardId}")]
+    [Route("board")]
     public async Task<IActionResult> GetBoard([FromQuery] string boardId)
     {
         var board = await _boardService.GetBoard(boardId);
