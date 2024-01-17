@@ -12,6 +12,10 @@ export class GameBoardComponent implements OnInit {
   constructor(private gameService : GameService) { }
 
   async ngOnInit(): Promise<void> {
+    await this.RefreshBoard();
+  }
+
+  public async RefreshBoard() {
     let board = await this.gameService.Board.toPromise();
 
     const boardSize = Math.sqrt(board.cells.length);
@@ -21,7 +25,5 @@ export class GameBoardComponent implements OnInit {
     for (let cell of board.cells) {
       this.board[cell.row][cell.column] = cell.value;
     }
-
   }
-
 }

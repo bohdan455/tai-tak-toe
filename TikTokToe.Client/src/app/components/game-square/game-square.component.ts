@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameService} from "../../services/game.service";
+import {Task} from "@angular/compiler-cli/ngcc/src/execution/tasks/api";
 
 @Component({
   selector: 'app-game-square',
@@ -12,6 +13,8 @@ export class GameSquareComponent implements OnInit {
   @Input() public cellFiller: number;
   @Input() public x: number;
   @Input() public y: number;
+
+  @Output() public refreshBoard: EventEmitter<Task> = new EventEmitter<Task>()
   constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
@@ -22,6 +25,8 @@ export class GameSquareComponent implements OnInit {
     if(this.cellFiller === 0){
       await this.gameService.makeMove(this.x, this.y).toPromise();
     }
+
+    await this.refreshBoard.emit();
   }
 
 }
