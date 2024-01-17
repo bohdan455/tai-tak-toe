@@ -30,7 +30,7 @@ public class GameController : ControllerBase
     {
         var playerId = Guid.NewGuid().ToString();
         await _boardService.AddSecondPlayerToGame(playerId, request.BoardId);
-        return Ok(playerId);
+        return Ok(new { playerId });
     }
 
     [HttpPut]

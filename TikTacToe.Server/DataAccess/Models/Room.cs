@@ -20,7 +20,7 @@ public class Room
     public Room(string firstPlayerId, int firstPlayerColorId, int boardSize)
     {
         Id = Guid.NewGuid();
-        FirstPlayer = new(Id, firstPlayerId, firstPlayerColorId);
+        FirstPlayer = new(Id ,firstPlayerId, firstPlayerColorId);
         Values = GetEmptyBoard(boardSize);
     }
     

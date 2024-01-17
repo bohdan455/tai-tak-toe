@@ -52,15 +52,15 @@ public class BoardService : IBoardService
 
     public async Task AddSecondPlayerToGame(string playerId, string boardId)
     {
-        var room = await _context
-            .Rooms
-            .Include(r => r.FirstPlayer)
-            .FirstAsync(r => r.Id.ToString() == boardId);
+        var firstPlayer = await _context
+            .Players
+            .Include(p => p.Room)
+            .SingleAsync(p => p.RoomId == Guid.Parse(boardId));
         
-        var playerColor = room.FirstPlayer.PlayerTypeId == 1 ? 2 : 1;
-        room.SecondPlayer = new(Guid.Parse(boardId), playerId, playerColor);
+        var playerColor = firstPlayer.PlayerTypeId == 1 ? 2 : 1;
+        var player = new Player(Guid.Parse(boardId), playerId, playerColor);
         
-        _context.Rooms.Update(room);
+        _context.Players.Add(player);
         await _context.SaveChangesAsync();
     }
 }

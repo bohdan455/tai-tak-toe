@@ -11,6 +11,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     options.UseSqlServer(connectionString ?? throw new ArgumentException("Haven't provided connection string"));
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+    }
 });
 
 builder.Services.AddCors(options =>

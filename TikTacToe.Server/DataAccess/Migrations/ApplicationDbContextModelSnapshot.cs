@@ -200,7 +200,7 @@ namespace DataAccess.Migrations
                     b.HasOne("DataAccess.Models.Room", "Room")
                         .WithOne()
                         .HasForeignKey("DataAccess.Models.Player", "RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Models.Room", null)

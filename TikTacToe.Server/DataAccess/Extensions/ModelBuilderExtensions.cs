@@ -53,7 +53,7 @@ public static class ModelBuilderExtensions
             .HasOne(p => p.Room)
             .WithOne()
             .HasForeignKey<Player>(p => p.RoomId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
     
     private static void ConfigurePlayerType(ModelBuilder modelBuilder)

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {GameService} from "../../services/game.service";
 
 @Component({
   selector: 'app-main-page',
@@ -8,13 +9,18 @@ import {Router} from "@angular/router";
 })
 export class MainPageComponent implements OnInit {
 
-  constructor(private router : Router) { }
+  boardId: string = '';
+
+  constructor(
+    private router : Router,
+    private gameService: GameService) { }
 
   ngOnInit(): void {
   }
 
-  startGame(){
-    this.router.navigate(['/game']);
+  async startGame(){
+    await this.gameService.joinGame(this.boardId);
+    await this.router.navigate(['/game']);
   }
 
 }

@@ -44,6 +44,15 @@ export class GameService extends BaseService {
     return this.put(`${Configuration.makeMove}`, body);
   }
 
+  async joinGame(boardId: string) : Promise<void> {
+    let body = {
+      boardId: boardId
+    }
+    let result = await this.post<{boardId: string}, { playerId:string }>(Configuration.joinGame, body).toPromise();
+    this.storageService.set("player", result.playerId);
+    this.storageService.set("board", boardId);
+  }
+
   checkWin(player: number): boolean {
     return this.checkRowWin(player) || this.checkColumnWin(player) || this.checkDiagonalWin(player) || this.checkAntiDiagonalWin(player)
   }
