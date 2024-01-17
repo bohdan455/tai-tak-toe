@@ -33,7 +33,7 @@ public class GameController : ControllerBase
         return Ok(playerId);
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("move")]
     public async Task<IActionResult> MakeMove([FromBody] MakeMoveRequest request)
     {
@@ -46,6 +46,6 @@ public class GameController : ControllerBase
     public async Task<IActionResult> GetBoard([FromQuery] string boardId)
     {
         var board = await _boardService.GetBoard(boardId);
-        return Ok(board);
+        return Ok(new BoardModel(board));
     }
 }

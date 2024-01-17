@@ -10,7 +10,8 @@ public class BoardDto
         Cells = room.Values.Select(x => new BoardCellDto
         {
             ColumnIndex = x.ColumnIndex,
-            RowIndex = x.RowIndex
+            RowIndex = x.RowIndex,
+            Value = x.Value,
         });
     }
     

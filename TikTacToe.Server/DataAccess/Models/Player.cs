@@ -9,16 +9,18 @@ public class Player
     {
     }
     
-    public Player(string playerId)
+    public Player(Guid roomId, string playerId)
     {
         Id = playerId;
         PlayerTypeId = Random.Shared.Next(1, 3);
+        RoomId = roomId;
     }
     
-    public Player(string playerId, int playerTypeId)
+    public Player(Guid roomId, string playerId, int playerTypeId)
     {
         Id = playerId;
         PlayerTypeId = playerTypeId;
+        RoomId = roomId;
     }
     
     public string Id { get; set; }

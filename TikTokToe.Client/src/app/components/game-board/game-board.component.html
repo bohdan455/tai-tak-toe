@@ -1,8 +1,8 @@
 <div class="container">
   <div>
-    <div *ngFor="let column of board; let x = index" >
+    <div class ="board-row" *ngFor="let column of board; let y = index" >
       <app-game-square
-        *ngFor="let cell of column; let y = index"
+        *ngFor="let cell of column; let x = index"
         [x]="x"
         [y]="y"
         [cellFiller]="cell"

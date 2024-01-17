@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GameService} from "../../services/game.service";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-game-board',
@@ -7,11 +8,20 @@ import {GameService} from "../../services/game.service";
   styleUrls: ['./game-board.component.css']
 })
 export class GameBoardComponent implements OnInit {
-  public board: number[][]
+  public board: number[][] = []
   constructor(private gameService : GameService) { }
 
-  ngOnInit(): void {
-    this.board = this.gameService.Board;
+  async ngOnInit(): Promise<void> {
+    let board = await this.gameService.Board.toPromise();
+
+    const boardSize = Math.sqrt(board.cells.length);
+
+    this.board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
+
+    for (let cell of board.cells) {
+      this.board[cell.row][cell.column] = cell.value;
+    }
+
   }
 
 }

@@ -18,12 +18,9 @@ export class GameSquareComponent implements OnInit {
     console.log(`cellFiller: ${this.cellFiller} x: ${this.x} y: ${this.y}`)
   }
 
-  public FillCell() {
+  public async FillCell() {
     if(this.cellFiller === 0){
-      this.cellFiller = this.gameService.makeMove(this.x, this.y)
-    }
-    if(this.gameService.checkWin(this.cellFiller)){
-      alert(`Player ${this.cellFiller == 1 ? "red" : "blue"} won!`)
+      await this.gameService.makeMove(this.x, this.y).toPromise();
     }
   }
 

@@ -11,3 +11,7 @@
   width: 300px;
   border: 1px solid black;
 }
+
+.board-row{
+  height: 100px;
+}

@@ -30,17 +30,6 @@ public static class ModelBuilderExtensions
             .WithOne()
             .HasForeignKey<Room>(r => r.WinnerId)
             .OnDelete(DeleteBehavior.Cascade);
-            
-        modelBuilder.Entity<Room>()
-            .HasOne(r => r.FirstPlayer)
-            .WithOne()
-            .HasForeignKey<Room>(r => r.FirstPlayerId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<Room>()
-            .HasOne(r => r.SecondPlayer)
-            .WithOne(r => r.Room)
-            .HasForeignKey<Room>(r => r.SecondPlayerId);
 
         modelBuilder.Entity<Room>()
             .HasOne(r => r.NextPlayerMove)
@@ -59,6 +48,12 @@ public static class ModelBuilderExtensions
             .WithMany()
             .HasForeignKey(p => p.PlayerTypeId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Player>()
+            .HasOne(p => p.Room)
+            .WithOne()
+            .HasForeignKey<Player>(p => p.RoomId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
     
     private static void ConfigurePlayerType(ModelBuilder modelBuilder)

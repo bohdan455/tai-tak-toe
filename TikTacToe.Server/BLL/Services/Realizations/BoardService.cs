@@ -58,7 +58,7 @@ public class BoardService : IBoardService
             .FirstAsync(r => r.Id.ToString() == boardId);
         
         var playerColor = room.FirstPlayer.PlayerTypeId == 1 ? 2 : 1;
-        room.SecondPlayer = new(playerId, playerColor);
+        room.SecondPlayer = new(Guid.Parse(boardId), playerId, playerColor);
         
         _context.Rooms.Update(room);
         await _context.SaveChangesAsync();

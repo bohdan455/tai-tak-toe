@@ -12,15 +12,15 @@ public class Room
     
     public Room(string firstPlayerId, int boardSize)
     {
-        Id = new Guid();
-        FirstPlayer = new(firstPlayerId);
+        Id = Guid.NewGuid();
+        FirstPlayer = new(Id, firstPlayerId);
         Values = GetEmptyBoard(boardSize);
     }
     
     public Room(string firstPlayerId, int firstPlayerColorId, int boardSize)
     {
-        Id = new Guid();
-        FirstPlayer = new(firstPlayerId, firstPlayerColorId);
+        Id = Guid.NewGuid();
+        FirstPlayer = new(Id, firstPlayerId, firstPlayerColorId);
         Values = GetEmptyBoard(boardSize);
     }
     
@@ -28,11 +28,7 @@ public class Room
     
     public Player FirstPlayer { get; set; }
     
-    public string FirstPlayerId { get; set; } = default!;
-    
     public Player? SecondPlayer { get; set; }
-    
-    public string? SecondPlayerId { get; set; }
 
     public Player? NextPlayerMove { get; set; }
     

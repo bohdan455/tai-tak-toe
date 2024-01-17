@@ -1,9 +1,15 @@
 import {Injectable} from "@angular/core";
+import {BaseService} from "./base.service";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {Configuration} from "../../environments/configuration";
+import {Board} from "../models/board.model";
+import {StorageService} from "./storage.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
+export class GameService extends BaseService {
   private readonly boardSize: number = 3;
   private readonly emptyCell: number = 0;
   private readonly redPlayer: number = 1;
@@ -13,19 +19,29 @@ export class GameService {
 
   private board: number[][] = [];
 
-  constructor() {
+  constructor(
+    protected httpClient: HttpClient,
+    protected storageService: StorageService) {
+    super(httpClient);
     this.initBoard();
   }
 
-  makeMove(x: number, y: number) : number {
-    console.log(`move: ${x} ${y}`);
-    let player = this.currentPlayer;
-    this.board = this.board.map((rowArray, rowIndex) =>
-      rowIndex === x ? [...rowArray.slice(0, y), player, ...rowArray.slice(y + 1)] : rowArray
-    );
+  get Board() : Observable<Board>{
+    let boardId = this.storageService.getInline("board");
+    return this.get<Board>(`${Configuration.getBoard}?boardId=${boardId}`);
+  }
 
-    this.currentPlayer = player === this.redPlayer ? this.bluePlayer : this.redPlayer;
-    return player;
+  makeMove(x: number, y: number) : Observable<void> {
+    console.log(`Making move x: ${x} y: ${y}`);
+    let boardId = this.storageService.getInline("board");
+    let playerId = this.storageService.getInline("player");
+    let body = {
+      boardId: boardId,
+      playerId: playerId,
+      x: x,
+      y: y
+    };
+    return this.put(`${Configuration.makeMove}`, body);
   }
 
   checkWin(player: number): boolean {
@@ -84,9 +100,5 @@ export class GameService {
       }
       this.board.push([...row]);  // Create a new array for each row
     }
-  }
-
-  get Board(): number[][] {
-    return this.board;
   }
 }
