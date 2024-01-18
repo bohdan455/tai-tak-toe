@@ -1,5 +1,5 @@
 <h1>Start game</h1>
-<button (click)="startGame()">Start game</button>
+<button *ngIf="!boardId" (click)="startGame()">Start game</button>
 <div *ngIf="boardId">
   <p>Board id: {{boardId}}</p>
   <a routerLink="/game">Go to game</a>
