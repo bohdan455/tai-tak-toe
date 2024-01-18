@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { GamePageComponent } from './pages/game-page/game-page.component';
 import {FormsModule} from "@angular/forms";
+import { StartGamePageComponent } from './pages/start-game-page/start-game-page.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {FormsModule} from "@angular/forms";
     GameBoardComponent,
     GameSquareComponent,
     MainPageComponent,
-    GamePageComponent
+    GamePageComponent,
+    StartGamePageComponent
   ],
   imports: [
     BrowserModule,

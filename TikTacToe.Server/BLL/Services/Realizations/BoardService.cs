@@ -1,6 +1,7 @@
 ﻿using BLL.Dto;
 using BLL.Services.Interfaces;
 using DataAccess;
+using DataAccess.Enum;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,8 +28,14 @@ public class BoardService : IBoardService
             .Room!
             .Values
             .FirstOrDefault(c => c.ColumnIndex == columnIndex && c.RowIndex == rowIndex);
+
+        if (cell.Value != CellTypes.Empty)
+        {
+            return;
+        }
+            
         
-        cell!.Value = player.PlayerTypeId;
+        cell.Value = player.PlayerTypeId;
         _context.BoardCellValues.Update(cell);
         await _context.SaveChangesAsync();
     }
@@ -57,8 +64,10 @@ public class BoardService : IBoardService
             .Include(p => p.Room)
             .SingleAsync(p => p.RoomId == Guid.Parse(boardId));
         
-        var playerColor = firstPlayer.PlayerTypeId == 1 ? 2 : 1;
-        var player = new Player(Guid.Parse(boardId), playerId, playerColor);
+        var playerColor = firstPlayer.PlayerTypeId == 1
+            ? 2
+            : 1;
+        var player = new Player(firstPlayer.RoomId, playerId, playerColor);;
         
         _context.Players.Add(player);
         await _context.SaveChangesAsync();
