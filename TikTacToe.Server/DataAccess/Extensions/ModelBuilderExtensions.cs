@@ -51,8 +51,8 @@ public static class ModelBuilderExtensions
 
         modelBuilder.Entity<Player>()
             .HasOne(p => p.Room)
-            .WithOne()
-            .HasForeignKey<Player>(p => p.RoomId)
+            .WithMany(r => r.Players)
+            .HasForeignKey(p => p.RoomId)
             .OnDelete(DeleteBehavior.Cascade);
     }
     

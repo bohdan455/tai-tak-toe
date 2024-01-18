@@ -33,7 +33,6 @@ public class BoardService : IBoardService
         {
             return;
         }
-            
         
         cell.Value = player.PlayerTypeId;
         _context.BoardCellValues.Update(cell);

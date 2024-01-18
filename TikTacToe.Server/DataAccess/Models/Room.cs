@@ -27,10 +27,10 @@ public class Room
     public Guid Id { get; set; }
     
     public Player FirstPlayer { get; set; }
-    
-    public Player? SecondPlayer { get; set; }
 
-    public Player? NextPlayerMove { get; set; }
+    public ICollection<Player> Players { get; set; } = new List<Player>();
+
+    public Player NextPlayerMove { get; set; }
     
     public string? NextPlayerMoveId { get; set; }
     
