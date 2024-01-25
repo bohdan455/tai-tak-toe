@@ -18,7 +18,7 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async startGame(){
+  async joinGame(){
     await this.gameService.joinGame(this.boardId);
     await this.router.navigate(['/game']);
   }
