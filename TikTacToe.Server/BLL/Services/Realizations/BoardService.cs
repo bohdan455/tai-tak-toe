@@ -18,24 +18,30 @@ public class BoardService : IBoardService
     
     public async Task MakeMove(int columnIndex, int rowIndex, string playerId)
     {
-        var player = await _context
+        var currentPlayer = await _context
             .Players
             .Include(p => p.Room)
             .ThenInclude(b => b!.Values)
             .FirstAsync(p => p.Id == playerId);
         
-        var cell = player
+        var cell = currentPlayer
             .Room!
             .Values
             .FirstOrDefault(c => c.ColumnIndex == columnIndex && c.RowIndex == rowIndex);
 
-        if (cell.Value != CellTypes.Empty)
+        if (cell.Value != CellTypes.Empty || currentPlayer.Room.NextPlayerMoveId != playerId)
         {
             return;
         }
         
-        cell.Value = player.PlayerTypeId;
+        var nextPlayer = await _context
+            .Players
+            .FirstAsync(p => p.Id != playerId && p.RoomId == currentPlayer.RoomId);
+        
+        currentPlayer.Room.NextPlayerMoveId = nextPlayer.Id;
+        cell.Value = currentPlayer.PlayerTypeId;
         _context.BoardCellValues.Update(cell);
+        _context.Rooms.Update(currentPlayer.Room);
         await _context.SaveChangesAsync();
     }
 
@@ -66,9 +72,27 @@ public class BoardService : IBoardService
         var playerColor = firstPlayer.PlayerTypeId == 1
             ? 2
             : 1;
-        var player = new Player(firstPlayer.RoomId, playerId, playerColor);;
+        var secondPlayer = new Player(firstPlayer.RoomId, playerId, playerColor);;
         
-        _context.Players.Add(player);
+        _context.Players.Add(secondPlayer);
+        await GetRandomNextMove(firstPlayer, secondPlayer);
         await _context.SaveChangesAsync();
+    }
+    
+    private Task GetRandomNextMove(Player firstPlayer, Player secondPlayer)
+    {
+        var randomPlayer = Random.Shared.Next(1, 3);
+        if (randomPlayer == 1)
+        {
+            firstPlayer.Room!.NextPlayerMoveId = firstPlayer.Id;
+            _context.Rooms.Update(firstPlayer.Room);
+        }
+        else
+        {
+            secondPlayer.Room!.NextPlayerMoveId = secondPlayer.Id;
+            _context.Rooms.Update(secondPlayer.Room);
+        }
+        
+        return Task.CompletedTask;
     }
 }
