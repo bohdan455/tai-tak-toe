@@ -50,6 +50,8 @@ public class BoardService : IBoardService
         var board = await _context
             .Rooms
             .Include(r => r.Values)
+            .Include(r => r.NextPlayerMove)
+            .ThenInclude(r => r.PlayerType)
             .FirstAsync(r => r.Id.ToString() == boardId);
         return new(board);
     }

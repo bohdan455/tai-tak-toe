@@ -1,1 +1,7 @@
-<app-game-board></app-game-board>
+<div class="game-page">
+  <h1>Board</h1>
+  <span class="current-move">Current Move: {{currentPlayer}}</span>
+  <app-game-board
+    (currentPlayerMove)="setCurrentPlayer($event)"
+  ></app-game-board>
+</div>

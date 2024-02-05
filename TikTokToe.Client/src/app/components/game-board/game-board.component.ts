@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {GameService} from "../../services/game.service";
 import {map} from "rxjs/operators";
 
@@ -8,6 +8,9 @@ import {map} from "rxjs/operators";
   styleUrls: ['./game-board.component.css']
 })
 export class GameBoardComponent implements OnInit {
+
+  @Output() public currentPlayerMove: EventEmitter<string> = new EventEmitter<string>();
+
   public board: number[][] = []
   constructor(private gameService : GameService) { }
 
@@ -25,5 +28,7 @@ export class GameBoardComponent implements OnInit {
     for (let cell of board.cells) {
       this.board[cell.row][cell.column] = cell.value;
     }
+
+    this.currentPlayerMove.emit(board.nextPlayerMove);
   }
 }

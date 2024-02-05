@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GamePageComponent implements OnInit {
 
+
+
+  public currentPlayer: string = "Waiting for player to join...:";
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  setCurrentPlayer(player: string) {
+    this.currentPlayer = player;
   }
 
 }
