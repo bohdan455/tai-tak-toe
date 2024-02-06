@@ -15,7 +15,7 @@ export class GameService extends BaseService {
   private readonly redPlayer: number = 1;
   private readonly bluePlayer: number = 2
 
-  private currentPlayer: number = this.redPlayer;
+  private currentPlayer: number;
 
   private board: number[][] = [];
 
@@ -31,10 +31,18 @@ export class GameService extends BaseService {
     return this.get<Board>(`${Configuration.getBoard}?boardId=${boardId}`);
   }
 
+  get BoardId() : string {
+    return this.storageService.getInline("board");
+  }
+
+  get PlayerId() : string {
+    return this.storageService.getInline("player");
+  }
+
   makeMove(x: number, y: number) : Observable<void> {
     console.log(`Making move x: ${x} y: ${y}`);
-    let boardId = this.storageService.getInline("board");
-    let playerId = this.storageService.getInline("player");
+    let boardId = this.BoardId;
+    let playerId = this.PlayerId;
     let body = {
       boardId: boardId,
       playerId: playerId,
@@ -57,7 +65,7 @@ export class GameService extends BaseService {
     let result = await this.post<{}, { boardId:string, playerId:string }>(Configuration.startGame, {}).toPromise();
     this.storageService.set("board", result.boardId);
     this.storageService.set("player", result.playerId);
-    
+
     return result.boardId;
   }
 

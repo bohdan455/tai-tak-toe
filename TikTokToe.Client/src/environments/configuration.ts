@@ -4,4 +4,5 @@ export const Configuration = {
   joinGame: '/api/game/join',
   makeMove: '/api/game/move',
   getBoard: '/api/game/board',
+  liveGame: '/gamehub'
 }

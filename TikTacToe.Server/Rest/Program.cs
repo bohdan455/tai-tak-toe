@@ -2,6 +2,7 @@ using BLL.Services.Interfaces;
 using BLL.Services.Realizations;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Rest.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -23,6 +24,7 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
+        policy.AllowCredentials();
         policy.WithOrigins(configuration["Angular"] ?? throw new ArgumentException("Haven't provided angular url"));
     });
 });
@@ -47,7 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<GameHub>("/gameHub");
 app.Run();
 return;
 
